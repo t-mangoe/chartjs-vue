@@ -51,6 +51,8 @@
 <script>
 import PieChart from "./PieChart.js";
 import InputNameDialog from "./InputNameDialog.vue";
+import axios from "axios";
+
 export default {
   components: {
     PieChart,
@@ -102,9 +104,23 @@ export default {
     };
   },
   mounted: function() {
+    this.init();
     this.updateChart();
   },
   methods: {
+    init: function() {
+      axios
+        // CORSエラーが出るので、nginxを導入して対応する => 対応済み
+        .get("/express/getData/")
+        .then((response) => {
+          console.log(response);
+          this.displayedData = response.data;
+          this.updateChart();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
     addData: function() {
       const newChartData = Object.assign({}, this.chartData);
       newChartData.datasets[0].data.push(10);
