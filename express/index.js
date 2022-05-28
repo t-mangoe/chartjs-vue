@@ -42,5 +42,26 @@ app.get("/getData/", (req, res) => {
   });
 });
 
+// リクエストのデータをDBに登録する
+app.post("/registData/", (req,res) => {
+  const insertedData = req.data;
+  insertedData.forEach(element => {
+    // まずはmergeで実装してみる
+    const name = element.name;
+    const value = element.value;
+    const sql = "replace into asset_data (name,value) values (?,?)";
+    con.query(
+      sql,
+      [name,value],
+      (err, result, fields) => {
+        if (err) throw err;
+      }
+    );
+  });
+
+  // デバッグ用に、echoサーバーのような挙動にしておく
+  res.send(req);
+});
+
 // ポート3000でサーバを立てる
 app.listen(3000, () => console.log("Listening on port 3000"));
