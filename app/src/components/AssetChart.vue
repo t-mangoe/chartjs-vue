@@ -2,7 +2,8 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-btn @click="updateChart">update</v-btn>
+        <v-btn class="ma-5" @click="updateChart">update chart</v-btn>
+        <v-btn class="ma-5" @click="registData">regist</v-btn>
         <v-simple-table>
           <template>
             <thead>
@@ -105,7 +106,7 @@ export default {
   },
   mounted: function() {
     this.init();
-    this.updateChart();
+    // this.updateChart();
   },
   methods: {
     init: function() {
@@ -150,6 +151,25 @@ export default {
     },
     showNameInputDialog: function() {
       this.$refs.inputNameDialog.show();
+    },
+    registData: function() {
+      confirm("データを登録します");
+      axios
+        .post("/express/registData/", {
+          data: [
+            {
+              // id: 1,
+              name: "dau",
+              value: 200,
+            },
+          ],
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };
