@@ -1,9 +1,16 @@
 // expressモジュールを読み込む
 const express = require("express");
 const mysql = require("mysql");
+const bodyParser = require("body-parser");
 
 // expressアプリを生成する
 const app = express();
+
+// body-parserの設定
+app.use(bodyParser.urlencoded({
+  extended:true
+}));
+app.use(bodyParser.json());
 
 // DBとの接続設定
 const db_config = {
@@ -44,15 +51,16 @@ app.get("/getData/", (req, res) => {
 
 // リクエストのデータをDBに登録する
 app.post("/registData/", (req,res) => {
-  const insertedData = req.data;
+  const insertedData = req.body.data;
   insertedData.forEach(element => {
     // まずはmergeで実装してみる
+    const id = element.id;
     const name = element.name;
     const value = element.value;
-    const sql = "replace into asset_data (name,value) values (?,?)";
+    const sql = "replace into asset_data (id,name,value) values (?,?,?)";
     con.query(
       sql,
-      [name,value],
+      [id,name,value],
       (err, result, fields) => {
         if (err) throw err;
       }
@@ -60,7 +68,7 @@ app.post("/registData/", (req,res) => {
   });
 
   // デバッグ用に、echoサーバーのような挙動にしておく
-  res.send(req);
+  res.send(req.body);
 });
 
 // ポート3000でサーバを立てる
