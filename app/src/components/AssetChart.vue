@@ -20,6 +20,11 @@
               <tr v-for="item in displayedData" :key="item.name">
                 <td class="text-left">{{ item.name }}</td>
                 <td><v-text-field v-model="item.value"></v-text-field></td>
+                <td>
+                  <v-btn icon @click="deleteTableRow">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </td>
               </tr>
             </tbody>
           </template>
@@ -90,10 +95,12 @@ export default {
       },
       displayedData: [
         {
+          id: 0,
           name: "Frozen Yogurt",
           value: 159,
         },
         {
+          id: 1,
           name: "Ice cream sandwich",
           value: 237,
         },
@@ -134,6 +141,9 @@ export default {
       rowData.value = 0;
       this.displayedData.push(rowData);
     },
+    deleteTableRow: function() {
+      confirm("行を削除する処理です");
+    },
     updateChart: function() {
       const newChartData = Object.assign({}, this.chartData);
       // ラベルを作成
@@ -154,21 +164,18 @@ export default {
     },
     registData: function() {
       confirm("データを登録します");
+      const registedData = this.displayedData;
       axios
         .post("/express/registData/", {
-          data: [
-            {
-              // id: 1,
-              name: "dau",
-              value: 200,
-            },
-          ],
+          data: registedData,
         })
         .then((response) => {
           console.log(response);
+          confirm("データの登録に成功しました");
         })
         .catch((error) => {
           console.error(error);
+          confirm("データの登録に失敗しました");
         });
     },
   },
