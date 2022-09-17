@@ -7,9 +7,11 @@ const bodyParser = require("body-parser");
 const app = express();
 
 // body-parserの設定
-app.use(bodyParser.urlencoded({
-  extended:true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use(bodyParser.json());
 
 // DBとの接続設定
@@ -50,23 +52,32 @@ app.get("/getData/", (req, res) => {
 });
 
 // リクエストのデータをDBに登録する
-app.post("/registData/", (req,res) => {
+app.post("/registData/", (req, res) => {
   const insertedData = req.body.data;
-  insertedData.forEach(element => {
+  insertedData.forEach((element) => {
     // まずはmergeで実装してみる
     const id = element.id;
     const name = element.name;
     const value = element.value;
     const sql = "replace into asset_data (id,name,value) values (?,?,?)";
-    con.query(
-      sql,
-      [id,name,value],
-      (err, result, fields) => {
-        if (err) throw err;
-      }
-    );
+    con.query(sql, [id, name, value], (err, result, fields) => {
+      if (err) throw err;
+    });
   });
 
+  // デバッグ用に、echoサーバーのような挙動にしておく
+  res.send(req.body);
+});
+
+// 指定されたidのデータを削除する
+app.delete("/deleteData/", (req, res) => {
+  const id = req.body.id;
+  console.log("delete ID = " + id + "!!!!");
+  // プレイスホルダーを使ってSQLを組み立てる
+  const sql = "delete from asset_data where id = ?";
+  con.query(sql, [id], (err, result, fields) => {
+    if (err) throw err;
+  });
   // デバッグ用に、echoサーバーのような挙動にしておく
   res.send(req.body);
 });
