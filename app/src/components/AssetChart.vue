@@ -21,7 +21,7 @@
                 <td class="text-left">{{ item.name }}</td>
                 <td><v-text-field v-model="item.value"></v-text-field></td>
                 <td>
-                  <v-btn icon @click="deleteTableRow">
+                  <v-btn icon @click="deleteTableRow(item.id)">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -141,8 +141,33 @@ export default {
       rowData.value = 0;
       this.displayedData.push(rowData);
     },
-    deleteTableRow: function() {
-      confirm("行を削除する処理です");
+    deleteTableRow: function(id) {
+      confirm("行を削除する処理です. id = " + id);
+      const _this = this;
+      axios
+        .delete("/express/deleteData/", {
+          data: { id },
+        })
+        .then((response) => {
+          console.log(response);
+          confirm("削除成功");
+
+          // クライアント側のデータから該当IDのデータを削除
+          // for (const item of _this.displayedData) {
+          //   if (item.id == id) {
+          //     console.log("find delete id !!!!");
+          //   }
+          // }
+
+          const filterdData = _this.displayedData.filter((item) => {
+            return item.id !== id;
+          });
+          _this.displayedData = filterdData;
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("削除失敗");
+        });
     },
     updateChart: function() {
       const newChartData = Object.assign({}, this.chartData);
