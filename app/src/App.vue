@@ -3,20 +3,21 @@
     <div id="app">
       <!-- <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-      <AssetChart></AssetChart>
+      <!-- <AssetChart></AssetChart> -->
+      <router-view />
     </div>
   </v-app>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import AssetChart from "./components/AssetChart.vue";
+// import AssetChart from "./components/AssetChart.vue";
 
 export default {
   name: "App",
   components: {
     // HelloWorld
-    AssetChart,
+    // AssetChart,
   },
 };
 </script>
