@@ -82,5 +82,16 @@ app.delete("/deleteData/", (req, res) => {
   res.send(req.body);
 });
 
+app.post("/login/", (req, res) => {
+  const userId = req.body.id;
+  const userPassword = req.body.pass;
+
+  // ひとまず、常に認証成功というような挙動とする
+  // TODO: ちゃんと認証処理を記述する
+  res.send({
+    message: "OK",
+  });
+});
+
 // ポート3000でサーバを立てる
 app.listen(3000, () => console.log("Listening on port 3000"));
