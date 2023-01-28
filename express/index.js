@@ -82,7 +82,7 @@ app.delete("/deleteData/", (req, res) => {
   res.send(req.body);
 });
 
-app.post("/login/", (req, res) => {
+app.post("/loginAuth/", (req, res) => {
   const userId = req.body.id;
   const userPassword = req.body.pass;
 

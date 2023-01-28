@@ -13,6 +13,7 @@
             label="メールアドレス"
             type="text"
             required
+            v-model="userId"
           ></v-text-field>
           <v-text-field
             name="password"
@@ -20,24 +21,49 @@
             id="password"
             type="password"
             required
+            v-model="userPassword"
           ></v-text-field>
         </v-form>
       </v-card-text>
-      <div class="login-btn">
-        <v-btn block color="primary">ログイン</v-btn>
-      </div>
+      <v-card-actions>
+        <v-btn color="primary" @click="login">ログイン</v-btn>
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Login",
+  data() {
+    return {
+      userId: "",
+      userPassword: "",
+    };
+  },
+  methods: {
+    login: function() {
+      const userId = this.userId;
+      const userPassword = this.userPassword;
+
+      axios
+        .post("/express/loginAuth/", {
+          id: userId,
+          pass: userPassword,
+        })
+        .then((response) => {
+          console.log(response);
+          confirm("認証に成功しました");
+        })
+        .catch((error) => {
+          console.error(error);
+          confirm("認証に失敗しました");
+        });
+    },
+  },
 };
 </script>
 
-<style scoped>
-.login-btn {
-  width: 50%;
-}
-</style>
+<style scoped></style>
