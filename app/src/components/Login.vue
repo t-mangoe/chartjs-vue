@@ -45,6 +45,7 @@ export default {
   },
   methods: {
     login: function() {
+      const _this = this;
       const userId = this.userId;
       const userPassword = this.userPassword;
 
@@ -56,6 +57,9 @@ export default {
         .then((response) => {
           console.log(response);
           confirm("認証に成功しました");
+
+          _this.$store.dispatch("auth", userId);
+          _this.$router.push("/");
         })
         .catch((error) => {
           console.error(error);
