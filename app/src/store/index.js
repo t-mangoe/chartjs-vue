@@ -9,14 +9,21 @@ const store = new Vuex.Store({
     userId: "",
   },
   mutations: {
-    updateUser(state, user) {
+    loginUser(state, user) {
       state.isLogin = true;
       state.userId = user;
+    },
+    logoutUser(state) {
+      state.isLogin = false;
+      state.userId = "";
     },
   },
   actions: {
     auth(context, user) {
-      context.commit("updateUser", user);
+      context.commit("loginUser", user);
+    },
+    logout(context) {
+      context.commit("logoutUser");
     },
   },
   modules: {},
