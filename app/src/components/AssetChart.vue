@@ -51,6 +51,7 @@
       @input-done="addTableRow"
       ref="inputNameDialog"
     ></InputNameDialog>
+    <v-row><v-btn class="ma-4" @click="logout">Logout</v-btn></v-row>
   </v-container>
 </template>
 
@@ -202,6 +203,13 @@ export default {
           console.error(error);
           confirm("データの登録に失敗しました");
         });
+    },
+    logout: function() {
+      confirm("ログアウトします");
+      // Vuexのauthアクションを実行
+      this.$store.dispatch("logout");
+      // Vue Routerを使ってログイン画面遷移
+      this.$router.push("/login");
     },
   },
 };
